@@ -35,6 +35,8 @@ class ErrorMiddleware {
   };
 
   errorHandler = (err, req, res, next) => {
+    console.error(err);
+
     this.isApi = req.originalUrl.startsWith("/api");
     this.isProd = env.NODE_ENV === "production";
 
