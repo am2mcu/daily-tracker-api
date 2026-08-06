@@ -8,5 +8,4 @@ export const createTracker = async (userId, data) => {
   const { title } = data;
   const newTracker = await Tracker.create({ title, user: userId });
   return newTracker;
-  src / controllers / trackerController.js;
 };
