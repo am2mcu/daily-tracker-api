@@ -9,7 +9,7 @@ const trackerSchema = new Schema(
     },
     checkedDates: [
       {
-        type: Date,
+        type: String,
       },
     ],
     user: {
