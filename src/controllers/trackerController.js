@@ -12,3 +12,12 @@ export const createTracker = asyncHandler(async (req, res, next) => {
 
   res.status(201).json({ status: "success", data: { tracker } });
 });
+
+export const deleteTracker = asyncHandler(async (req, res, next) => {
+  const tracker = await trackerService.deleteTracker(
+    req.user.id,
+    req.params.id,
+  );
+
+  res.status(204).json(null);
+});
