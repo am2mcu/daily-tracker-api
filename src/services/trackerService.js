@@ -14,3 +14,14 @@ export const deleteTracker = async (userId, trackerId) => {
   const tracker = await Tracker.deleteOne({ _id: trackerId, user: userId });
   return tracker;
 };
+
+export const updateTracker = async (userId, trackerId, data) => {
+  const { title } = data;
+  const tracker = await Tracker.findOneAndUpdate(
+    { _id: trackerId, user: userId },
+    { title },
+    { returnDocument: "after", runValidators: true },
+  );
+
+  return tracker;
+};
