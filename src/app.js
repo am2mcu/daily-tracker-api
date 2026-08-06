@@ -16,7 +16,7 @@ const app = express();
 if (env.NODE_ENV === "development") app.use(morgan("dev"));
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors({ origin: env.ALLOWED_ORIGIN }));
+app.use(cors({ origin: env.ALLOWED_ORIGIN, credentials: true }));
 
 app.use("/api/v1/health", (req, res, next) => {
   res.json({ status: "ok" });
