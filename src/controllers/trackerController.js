@@ -31,3 +31,9 @@ export const updateTracker = asyncHandler(async (req, res, next) => {
 
   res.status(200).json({ status: "success", data: { tracker } });
 });
+
+export const checkDate = asyncHandler(async (req, res, next) => {
+  const tracker = await trackerService.checkDate(req.user.id, req.params.id);
+
+  res.status(200).json({ status: "success", data: { tracker } });
+});

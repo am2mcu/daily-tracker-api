@@ -1,4 +1,5 @@
 import Tracker from "../models/trackerModel.js";
+import { getToday } from "../utils/date/dateHandler.js";
 import { BadRequest, NotFoundError } from "../utils/errors.js";
 
 export const getTrackers = async (userId) =>
@@ -24,4 +25,23 @@ export const updateTracker = async (userId, trackerId, data) => {
   );
 
   return tracker;
+};
+
+export const checkDate = async (userId, trackerId) => {
+  const tracker = await Tracker.findOne({ _id: trackerId, user: userId });
+
+  const today = getToday();
+
+  if (tracker.checkedDates.includes(today))
+    return await Tracker.findOneAndUpdate(
+      { _id: trackerId, user: userId },
+      { $pull: { checkedDates: today } },
+      { returnDocument: "after", runValidators: true },
+    );
+
+  return await Tracker.findOneAndUpdate(
+    { _id: trackerId, user: userId },
+    { $push: { checkedDates: today } },
+    { returnDocument: "after", runValidators: true },
+  );
 };
