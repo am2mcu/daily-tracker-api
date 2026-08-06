@@ -13,6 +13,7 @@ const envSchema = z.object({
   RESEND_API_KEY: z.string().optional(),
   EMAIL_SENDER: z.string().email().optional(),
   EMAIL_RECEIVER: z.string().email().optional(),
+  ALLOWED_ORIGIN: z.string().default("http://localhost:5173"),
 });
 
 const parsed = envSchema.safeParse(process.env);
