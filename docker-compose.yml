@@ -6,7 +6,7 @@ services:
       - "80"
     environment:
       PORT: 80
-      DB_URI: mongodb://mongo:27017/daily-tracker
+      MONGODB_URI: mongodb://mongo:27017/daily-tracker
       ALLOWED_ORIGIN: ${ALLOWED_ORIGIN}
       JWT_SECRET: ${JWT_SECRET}
       JWT_EXPIRY: ${JWT_EXPIRY}
