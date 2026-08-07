@@ -1,20 +1,22 @@
 services:
-  app:
-    build: .
-    container_name: express-api
-    ports:
-      - "3000:3000"
+  api:
+    image: ${IMAGE_NAME}
+    container_name: daily-tracker-api
+    expose:
+      - "80"
     environment:
-      MONGO_URI: mongodb://mongo:27017/mydatabase
-      PORT: 3000
-    depends_on:
-      - mongo
+      PORT: 80
+      DB_URI: mongodb://mongo:27017/daily-tracker
+      ALLOWED_ORIGIN: ${ALLOWED_ORIGIN}
+      JWT_SECRET: ${JWT_SECRET}
+      JWT_EXPIRY: ${JWT_EXPIRY}
+    restart: unless-stopped
+    networks:
+      - shared-mongo
+      - proxy
 
-  mongo:
-    image: mongo:7
-    container_name: mongodb
-    volumes:
-      - mongo_data:/data/db
-
-volumes:
-  mongo_data:
+networks:
+  proxy:
+    external: true
+  shared-mongo:
+    external: true
