@@ -6,8 +6,8 @@ export const getTrackers = async (userId) =>
   await Tracker.find({ user: userId });
 
 export const createTracker = async (userId, data) => {
-  const { title } = data;
-  const newTracker = await Tracker.create({ title, user: userId });
+  const { title, mustDo } = data;
+  const newTracker = await Tracker.create({ title, user: userId, mustDo });
   return newTracker;
 };
 
