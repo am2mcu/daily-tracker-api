@@ -12,6 +12,10 @@ const trackerSchema = new Schema(
         type: String,
       },
     ],
+    mustDo: {
+      type: Boolean,
+      required: [true, "MustDo is required"],
+    },
     user: {
       type: Schema.Types.ObjectId,
       required: [true, "User is required"],
