@@ -2,8 +2,27 @@ import Tracker from "../models/trackerModel.js";
 import { getToday } from "../utils/date/dateHandler.js";
 import { BadRequest, NotFoundError } from "../utils/errors.js";
 
-export const getTrackers = async (userId) =>
-  await Tracker.find({ user: userId });
+export const getTrackers = async (userId) => {
+  const today = getToday();
+  const trackers = Tracker.aggregate([
+    {
+      $addFields: {
+        hasToday: {
+          $cond: {
+            if: { $in: [today, "$checkedDates"] },
+            then: 1,
+            else: 0,
+          },
+        },
+      },
+    },
+    { $sort: { hasToday: 1 } },
+    { $set: { id: "$_id" } },
+    { $unset: ["hasToday", "_id", "__v"] },
+  ]);
+
+  return trackers;
+};
 
 export const createTracker = async (userId, data) => {
   const { title, mustDo } = data;
