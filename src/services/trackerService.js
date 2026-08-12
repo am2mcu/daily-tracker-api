@@ -1,3 +1,4 @@
+import { Types } from "mongoose";
 import Tracker from "../models/trackerModel.js";
 import { getToday } from "../utils/date/dateHandler.js";
 import { BadRequest, NotFoundError } from "../utils/errors.js";
@@ -5,6 +6,9 @@ import { BadRequest, NotFoundError } from "../utils/errors.js";
 export const getTrackers = async (userId) => {
   const today = getToday();
   const trackers = Tracker.aggregate([
+    {
+      $match: { user: new Types.ObjectId(userId) },
+    },
     {
       $addFields: {
         hasToday: {
