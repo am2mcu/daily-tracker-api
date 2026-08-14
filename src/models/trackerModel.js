@@ -7,11 +7,6 @@ const trackerSchema = new Schema(
       required: [true, "Title is required"],
       trim: true,
     },
-    checkedDates: [
-      {
-        type: String,
-      },
-    ],
     mustDo: {
       type: Boolean,
       required: [true, "MustDo is required"],

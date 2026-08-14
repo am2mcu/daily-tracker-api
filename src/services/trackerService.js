@@ -2,30 +2,28 @@ import { Types } from "mongoose";
 import Tracker from "../models/trackerModel.js";
 import { getToday } from "../utils/date/dateHandler.js";
 import { BadRequest, NotFoundError } from "../utils/errors.js";
+import {
+  addTrackerDate,
+  deleteTrackerDates,
+  getTrackerDates,
+} from "./trackerDateService.js";
 
 export const getTrackers = async (userId) => {
-  const today = getToday();
-  const trackers = Tracker.aggregate([
-    {
-      $match: { user: new Types.ObjectId(userId) },
-    },
-    {
-      $addFields: {
-        hasToday: {
-          $cond: {
-            if: { $in: [today, "$checkedDates"] },
-            then: 1,
-            else: 0,
-          },
-        },
-      },
-    },
-    { $sort: { hasToday: 1 } },
-    { $set: { id: "$_id" } },
-    { $unset: ["hasToday", "_id", "__v"] },
-  ]);
+  const trackers = await Tracker.find({ user: userId });
 
-  return trackers;
+  const updatedTrackers = await Promise.all(
+    trackers.map(async (tracker) => {
+      const trackerDates = await getTrackerDates(tracker.id);
+      return {
+        id: tracker.id,
+        title: tracker.title,
+        mustDo: tracker.mustDo,
+        checkedDates: trackerDates,
+      };
+    }),
+  );
+
+  return updatedTrackers;
 };
 
 export const createTracker = async (userId, data) => {
@@ -36,6 +34,7 @@ export const createTracker = async (userId, data) => {
 
 export const deleteTracker = async (userId, trackerId) => {
   const tracker = await Tracker.deleteOne({ _id: trackerId, user: userId });
+  await deleteTrackerDates(trackerId);
   return tracker;
 };
 
@@ -52,19 +51,8 @@ export const updateTracker = async (userId, trackerId, data) => {
 
 export const checkDate = async (userId, trackerId) => {
   const tracker = await Tracker.findOne({ _id: trackerId, user: userId });
-
   const today = getToday();
 
-  if (tracker.checkedDates.includes(today))
-    return await Tracker.findOneAndUpdate(
-      { _id: trackerId, user: userId },
-      { $pull: { checkedDates: today } },
-      { returnDocument: "after", runValidators: true },
-    );
-
-  return await Tracker.findOneAndUpdate(
-    { _id: trackerId, user: userId },
-    { $push: { checkedDates: today } },
-    { returnDocument: "after", runValidators: true },
-  );
+  await addTrackerDate(tracker.id, today);
+  return tracker;
 };
