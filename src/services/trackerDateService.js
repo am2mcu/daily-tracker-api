@@ -13,19 +13,30 @@ export const addTrackerDate = async (trackerId, date) => {
 
   // delete if already exists
   if (trackerDate) {
-    await deleteTrackerDate(trackerDate.id);
-    return;
+    return await updateTrackerDate(trackerDate.id, {
+      isDone: !trackerDate.isDone,
+    });
   }
 
-  return await TrackerDate.create({ date, tracker: trackerId });
+  return await TrackerDate.create({ date, isDone: true, tracker: trackerId });
+};
+
+export const updateTrackerDate = async (id, data) => {
+  const { isDone, note } = data;
+  const trackerDate = await TrackerDate.findByIdAndUpdate(
+    id,
+    { isDone, note },
+    { returnDocument: "after", runValidators: true },
+  );
+  return trackerDate;
 };
 
 export const deleteTrackerDate = async (id) => {
-  const tracker = await TrackerDate.findByIdAndDelete(id);
-  return tracker;
+  const trackerDate = await TrackerDate.findByIdAndDelete(id);
+  return trackerDate;
 };
 
 export const deleteTrackerDates = async (trackerId) => {
-  const TrackerDates = await TrackerDate.deleteMany({ tracker: trackerId });
-  return TrackerDates;
+  const trackerDates = await TrackerDate.deleteMany({ tracker: trackerId });
+  return trackerDates;
 };

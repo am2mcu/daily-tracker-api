@@ -6,6 +6,10 @@ const trackerDateSchema = new Schema(
       type: String,
       required: [true, "Date is required"],
     },
+    isDone: {
+      type: Boolean,
+      required: [true, "isDone is required"],
+    },
     note: {
       type: String,
       trim: true,
