@@ -4,6 +4,7 @@ import {
   createTracker,
   deleteTracker,
   updateTracker,
+  updateTrackerDate,
   checkDate,
 } from "../controllers/trackerController.js";
 import { authenticate } from "../middlewares/authMiddleware.js";
@@ -16,6 +17,6 @@ router.route("/").get(getTrackers).post(createTracker);
 
 router.route("/:id").delete(deleteTracker).patch(updateTracker).post(checkDate);
 
-router.route("/:id/:date").patch(updateTracker);
+router.route("/:id/:date").patch(updateTrackerDate);
 
 export default router;
