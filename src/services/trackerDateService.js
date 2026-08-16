@@ -12,6 +12,14 @@ export const updateTrackerDateBydate = async (trackerId, date, data) => {
     { returnDocument: "after", runValidators: true },
   );
 
+  if (!trackerDate)
+    return await TrackerDate.create({
+      tracker: trackerId,
+      date,
+      isDone: false,
+      note,
+    });
+
   return trackerDate;
 };
 
