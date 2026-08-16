@@ -60,7 +60,7 @@ export const checkDate = async (userId, trackerId) => {
 };
 
 export const updateTrackerDate = async (userId, trackerId, date, data) => {
-  const tracker = await Tracker.findOne({ user: userId });
+  const tracker = await Tracker.findOne({ user: userId, _id: trackerId });
 
   await updateTrackerDateBydate(tracker.id, date, data);
 
