@@ -1,5 +1,20 @@
 import TrackerDate from "../models/trackerDateModel.js";
 
+export const updateTrackerDateBydate = async (trackerId, date, data) => {
+  const { note } = data;
+
+  const trackerDate = await TrackerDate.findOneAndUpdate(
+    {
+      tracker: trackerId,
+      date,
+    },
+    { note },
+    { returnDocument: "after", runValidators: true },
+  );
+
+  return trackerDate;
+};
+
 export const getTrackerDates = async (trackerId) => {
   const trackerDates = await TrackerDate.find({
     tracker: trackerId,

@@ -16,4 +16,6 @@ router.route("/").get(getTrackers).post(createTracker);
 
 router.route("/:id").delete(deleteTracker).patch(updateTracker).post(checkDate);
 
+router.route("/:id/:date").patch(updateTracker);
+
 export default router;

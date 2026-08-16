@@ -6,7 +6,9 @@ import {
   addTrackerDate,
   deleteTrackerDates,
   getTrackerDates,
+  updateTrackerDateBydate,
 } from "./trackerDateService.js";
+import { date } from "zod";
 
 export const getTrackers = async (userId) => {
   const trackers = await Tracker.find({ user: userId });
@@ -54,5 +56,13 @@ export const checkDate = async (userId, trackerId) => {
   const today = getToday();
 
   await addTrackerDate(tracker.id, today);
+  return tracker;
+};
+
+export const updateTrackerDate = async (userId, trackerId, date, data) => {
+  const tracker = await Tracker.findOne({ user: userId });
+
+  await updateTrackerDateBydate(tracker.id, date, data);
+
   return tracker;
 };
