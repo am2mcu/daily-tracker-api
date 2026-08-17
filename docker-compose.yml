@@ -1,7 +1,20 @@
 services:
+  migrate:
+    image: ${IMAGE_NAME}
+    container_name: daily-tracker-api-migration
+    command: npm run migrate
+    environment:
+      MONGODB_URI: mongodb://mongo:27017/daily-tracker
+    restart: "no"
+    networks:
+      - shared-mongo
+
   api:
     image: ${IMAGE_NAME}
     container_name: daily-tracker-api
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
     expose:
       - "80"
     environment:
