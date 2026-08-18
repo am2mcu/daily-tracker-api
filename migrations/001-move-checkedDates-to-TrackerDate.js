@@ -16,7 +16,7 @@ export async function up(db) {
     if (!checkedDates) continue;
 
     const docs = checkedDates.map((date) => ({
-      trackerId: tracker._id,
+      tracker: tracker._id,
       date: date,
       isDone: true,
       createdAt: tracker.createdAt,
