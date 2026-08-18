@@ -1,6 +1,6 @@
 import { Types } from "mongoose";
 import Tracker from "../models/trackerModel.js";
-import { getToday } from "../utils/date/dateHandler.js";
+import { isToday, isYesterday } from "../utils/date/dateHandler.js";
 import { BadRequest, NotFoundError } from "../utils/errors.js";
 import {
   addTrackerDate,
@@ -51,11 +51,14 @@ export const updateTracker = async (userId, trackerId, data) => {
   return tracker;
 };
 
-export const checkDate = async (userId, trackerId) => {
-  const tracker = await Tracker.findOne({ _id: trackerId, user: userId });
-  const today = getToday();
+export const checkDate = async (userId, trackerId, data) => {
+  const { date } = data;
 
-  await addTrackerDate(tracker.id, today);
+  const tracker = await Tracker.findOne({ _id: trackerId, user: userId });
+
+  if (isToday(date) || isYesterday(date))
+    await addTrackerDate(tracker.id, date);
+
   return tracker;
 };
 
