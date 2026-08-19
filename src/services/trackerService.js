@@ -19,7 +19,6 @@ export const getTrackers = async (userId) => {
       return {
         id: tracker.id,
         title: tracker.title,
-        mustDo: tracker.mustDo,
         checkedDates: trackerDates,
       };
     }),
@@ -29,8 +28,8 @@ export const getTrackers = async (userId) => {
 };
 
 export const createTracker = async (userId, data) => {
-  const { title, mustDo } = data;
-  const newTracker = await Tracker.create({ title, user: userId, mustDo });
+  const { title } = data;
+  const newTracker = await Tracker.create({ title, user: userId });
   return newTracker;
 };
 
