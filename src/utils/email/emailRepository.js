@@ -1,3 +1,3 @@
-import * as resendProvider from "./resendProvider.js";
+import * as resendCurl from "./resendCurl.js";
 
-export const sendEmail = resendProvider.sendEmail;
+export const sendEmail = resendCurl.sendEmail;
