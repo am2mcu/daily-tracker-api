@@ -7,6 +7,7 @@ import {
 } from "../utils/errors.js";
 import cryptography from "../utils/cryptoHandler.js";
 import { sendEmail } from "../utils/email/emailRepository.js";
+import env from "../config/env.js";
 
 export const signup = async (data) => {
   const { email, password } = data || {};
@@ -34,7 +35,7 @@ export const signup = async (data) => {
   sendEmail(
     user.email,
     "Email Verification",
-    `Click on the following link to verify your account: http://127.0.0.1:3000/api/v1/users/verify-account/${verificationToken}`,
+    `Click on the following link to verify your account: ${env.BASE_URL}/api/v1/verify-account/${verificationToken}`,
   );
 
   return verificationToken;

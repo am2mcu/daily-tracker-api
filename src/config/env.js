@@ -11,9 +11,10 @@ const envSchema = z.object({
   JWT_SECRET: z.string().min(1, "JWT_SECRET is required"),
   JWT_EXPIRY: z.string().default("7d"),
   RESEND_API_KEY: z.string().optional(),
-  EMAIL_SENDER: z.string().email().optional(),
+  EMAIL_SENDER: z.string().default("Acme <onboarding@resend.dev>"),
   EMAIL_RECEIVER: z.string().email().optional(),
   ALLOWED_ORIGIN: z.string().default("http://localhost:5173"),
+  BASE_URL: z.string().default("http://localhost:3000"),
 });
 
 const parsed = envSchema.safeParse(process.env);
